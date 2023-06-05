@@ -39,25 +39,34 @@ import java.util.Scanner;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class GoogleSearch{
+    
    public static void main(String[] args) throws InterruptedException, FileNotFoundException, IOException {
-   System.setProperty("webdriver.chrome.driver","C:\\Users\\badhonkhan481\\Desktop\\SQL Project\\chromedriver_win32\\chromedriver.exe");
+   System.setProperty("webdriver.chrome.driver","C:\\Users\\badhonkhan481\\Desktop\\SQA Project\\chromedriver_win32\\chromedriver.exe");
       WebDriver driver = new ChromeDriver();
       driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
       driver.manage().window().maximize();
       driver.navigate().to("https://www.google.com/");
 
-      FileInputStream fs = new FileInputStream("C:\\Users\\badhonkhan481\\Desktop\\SQL Project\\GoogleSearch\\Excel.xlsx");
-      XSSFWorkbook workbook = new XSSFWorkbook(fs);
+      FileInputStream fis = new FileInputStream("C:\\Users\\badhonkhan481\\Desktop\\SQA Project\\GoogleSearch\\Excel.xlsx");
+//     File src=new File("C:\\Users\\badhonkhan481\\Documents\\NetBeansProjects\\javawrite\\Excel.xlsx");
+//    FileInputStream fis = new FileInputStream(src);
+//      XSSFWorkbook workbook = new XSSFWorkbook(fis);
+      XSSFWorkbook workbook = new XSSFWorkbook(fis);
       XSSFSheet sheet = workbook.getSheet("Saturday");
       int rowcount =sheet.getLastRowNum();
       int colcount=sheet.getRow(2).getLastCellNum();
       System.out.println("rowcount:"+rowcount+"colconut:"+colcount);
       
       
+      
       for(int i=2; i<=rowcount; ++i)
       {
         XSSFRow celldata=sheet.getRow(i);
         String key=celldata.getCell(2).getStringCellValue();
+        XSSFRow Cell=sheet.getRow(i);
+        Row row = sheet.getRow(i);
+	Cell cell = row.createCell(3);
+        Cell cell2 = row.createCell(4);
         WebElement p=driver.findElement(By.name("q"));
         p.sendKeys(key);
         WebDriverWait w = new WebDriverWait(driver,Duration.ofSeconds(10));
@@ -65,25 +74,25 @@ public class GoogleSearch{
         Thread.sleep(100);  
 //        WebElement ele=driver.findElement(By.xpath("//ul"));
         
-        WebElement ele = driver.findElement(By.xpath("//*[@id=\"APjFqb\"]"));
-
+        WebElement ele = driver.findElement(By.xpath("//*[@id=\"Zrbbw\"]"));
+        WebElement ele2 = driver.findElement(By.xpath("//*[@id=\"vTtioc\"]"));
         String eleText=getText(ele);
+        String eleText2=getText2(ele2);
+        
         System.out.println("Text value:"+eleText);
-//        GoogleSearch we=new GoogleSearch();
-//       String excelPath="C:\\Users\\badhonkhan481\\Desktop\\SQL Project\\GoogleSearch\\Excel.xlsx";
-//       we.writeData(excelPath, "Saturday", 2, 3,eleText);
-      
-         
+	cell.setCellValue(eleText);
+        cell2.setCellValue(eleText2);
+   
         p.clear();
-        
-        
-        
+  
 //        p.submit();
       }
-//      GoogleSearch we=new GoogleSearch();
-//       String excelPath="C:\\Users\\badhonkhan481\\Desktop\\SQL Project\\GoogleSearch\\Excel.xlsx";
-//       we.writeData(excelPath, "Saturday", 2, 3,"eleText");
-//         
+      
+     FileOutputStream fos = new FileOutputStream("C:\\Users\\badhonkhan481\\Desktop\\SQA Project\\GoogleSearch\\Excel.xlsx");
+	workbook.write(fos);
+	fos.close();
+	System.out.println("END OF WRITING DATA IN EXCEL");
+   
    }
    
    public static String getText(WebElement ele){
@@ -99,31 +108,18 @@ public class GoogleSearch{
         }
         return eleText;
    }
-  
-//   public void writeData(String excelPath, String sheetName, int rowNumber, int columnNumber, String data) {
-//   try{
-//       File file=new File(excelPath);
-//      FileInputStream fis =new FileInputStream(file);
-//       XSSFWorkbook wb =new XSSFWorkbook();
-//       XSSFSheet sheet =wb.getSheet(sheetName);
-//       XSSFRow row =sheet.getRow(rowNumber);
-//       XSSFCell cell=row.getCell(columnNumber );
-////       Row.MissingCellPolicy RETURN_BLANK_AS_NULL = org.apache.poi.ss.usermodel.Row.MissingCellPolicy.RETURN_BLANK_AS_NULL;
-//       if(cell==null){
-//           row.createCell(columnNumber);
-//           cell.setCellValue(data);
-//               }
-//       else{
-//               cell.setCellValue(data);    
-//                   }
-//
-//       FileOutputStream fio=new FileOutputStream(file);
-//       wb.write(fio);
-//       wb.close();
-//   }catch(IOException io){
-//       io.printStackTrace();
-//       
-//   } 
-//   
-
+  public static String getText2(WebElement ele2){
+        String eleText2=null;
+        eleText2=ele2.getText();
+        eleText2="";
+        if(eleText2.equals("")){
+            eleText2=ele2.getAttribute("innerText");
+            eleText2="";
+            if(eleText2.equals("")){
+                eleText2=ele2.getAttribute("textContent");
+            }
+        }
+        return eleText2;
+   }
+ 
 }
