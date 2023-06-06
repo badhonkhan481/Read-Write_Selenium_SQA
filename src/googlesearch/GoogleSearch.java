@@ -74,8 +74,14 @@ public class GoogleSearch{
         Thread.sleep(100);  
 //        WebElement ele=driver.findElement(By.xpath("//ul"));
         
+<<<<<<< HEAD
         WebElement ele = driver.findElement(By.xpath("//*[@id=\"Zrbbw\"]"));
         WebElement ele2 = driver.findElement(By.xpath("//*[@id=\"vTtioc\"]"));
+=======
+        WebElement ele = driver.findElement(By.xpath("//*[@id=\"vTtioc\"]"));        
+        WebElement ele2 = driver.findElement(By.xpath("//*[@id=\"Zrbbw\"]"));
+        
+>>>>>>> 552e1a6 (updat 4)
         String eleText=getText(ele);
         String eleText2=getText2(ele2);
         
